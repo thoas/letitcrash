@@ -8,6 +8,12 @@ import (
 
 // HandleRecover handles an error from a recover situation.
 func HandleRecover(w http.ResponseWriter, r *http.Request, opts ...Option) {
+	if err := recover(); err != nil {
+		HandleError(err, w, r, opts...)
+	}
+}
+
+func HandleError(err interface{}, w http.ResponseWriter, r *http.Request, opts ...Option) {
 	opt := newOptions(opts...)
 
 	log.SetFlags(log.Lmicroseconds)
@@ -15,11 +21,9 @@ func HandleRecover(w http.ResponseWriter, r *http.Request, opts ...Option) {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	if err := recover(); err != nil {
-		HandleError(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`Internal server error`))
-	}
+	PrintError(err)
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte(`Internal server error`))
 }
 
 // Handler is a MiddlewareFunc which implements the Middleware interface.
@@ -29,6 +33,15 @@ func Handler(h http.Handler, opts ...Option) http.Handler {
 
 		h.ServeHTTP(w, r)
 	})
+}
+
+type HandlerFunc func(http.ResponseWriter, *http.Request) error
+
+// ServeHTTP calls f(w, r).
+func (f HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if err := f(w, r); err != nil {
+		HandleError(err, w, r)
+	}
 }
 
 // ServeHTTP is a Negroni compatible interface.

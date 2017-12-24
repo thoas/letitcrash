@@ -29,8 +29,8 @@ func process(in io.Reader, out io.Writer, p *stack.Palette, s stack.Similarity, 
 	return err
 }
 
-// HandleError handles error and format it to stdout.
-func HandleError(thr interface{}) error {
+// PrintError handles error and format it to stdout.
+func PrintError(thr interface{}) error {
 	var out io.Writer = os.Stdout
 
 	s := stack.AnyPointer

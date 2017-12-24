@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		panic(fmt.Errorf("looks like we have a panic situation"))
+	h := call911.HandlerFunc(func(w http.ResponseWriter, r *http.Request) error {
+		return fmt.Errorf("looks like we have a panic situation")
 	})
 
 	http.Handle("/panic", call911.Handler(h, call911.WithVerbose(false)))
