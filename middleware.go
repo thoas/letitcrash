@@ -6,11 +6,20 @@ import (
 	"net/http"
 )
 
+type ErrorHandler func(err interface{}, w http.ResponseWriter, r *http.Request)
+
+func defaultErrorHandler(err interface{}, w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte(`Internal server error`))
+}
+
 var defaultOptions = newOptions(
 	WithVerbose(false),
 	WithConsole(true),
+	WithErrorHandler(defaultErrorHandler),
 )
 
+// SetDefaultOptions sets default options.
 func SetDefaultOptions(opts ...Option) {
 	defaultOptions = newOptions(opts...)
 }
@@ -22,10 +31,10 @@ func HandleRecover(w http.ResponseWriter, r *http.Request, opts ...Option) {
 	}
 }
 
+// HandleError handles an error.
 func HandleError(err interface{}, w http.ResponseWriter, r *http.Request, opts ...Option) {
 	opt := defaultOptions.Merge(newOptions(opts...))
 
-	log.SetFlags(log.Lmicroseconds)
 	if opt.Verbose != nil && !*opt.Verbose {
 		log.SetOutput(ioutil.Discard)
 	}
@@ -34,8 +43,7 @@ func HandleError(err interface{}, w http.ResponseWriter, r *http.Request, opts .
 		PrintError(err)
 	}
 
-	w.WriteHeader(http.StatusInternalServerError)
-	w.Write([]byte(`Internal server error`))
+	opt.ErrorHandler(err, w, r)
 }
 
 // Handler is a MiddlewareFunc which implements the Middleware interface.
@@ -47,6 +55,7 @@ func Handler(h http.Handler, opts ...Option) http.Handler {
 	})
 }
 
+// HandlerFunc is a http.HandlerFunc which can return an error.
 type HandlerFunc func(http.ResponseWriter, *http.Request) error
 
 // ServeHTTP calls f(w, r).
