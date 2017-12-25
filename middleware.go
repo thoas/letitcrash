@@ -6,6 +6,15 @@ import (
 	"net/http"
 )
 
+var defaultOptions = newOptions(
+	WithVerbose(false),
+	WithConsole(true),
+)
+
+func SetDefaultOptions(opts ...Option) {
+	defaultOptions = newOptions(opts...)
+}
+
 // HandleRecover handles an error from a recover situation.
 func HandleRecover(w http.ResponseWriter, r *http.Request, opts ...Option) {
 	if err := recover(); err != nil {
@@ -14,14 +23,17 @@ func HandleRecover(w http.ResponseWriter, r *http.Request, opts ...Option) {
 }
 
 func HandleError(err interface{}, w http.ResponseWriter, r *http.Request, opts ...Option) {
-	opt := newOptions(opts...)
+	opt := defaultOptions.Merge(newOptions(opts...))
 
 	log.SetFlags(log.Lmicroseconds)
-	if !opt.Verbose {
+	if opt.Verbose != nil && !*opt.Verbose {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	PrintError(err)
+	if opt.Console != nil && *opt.Console {
+		PrintError(err)
+	}
+
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(`Internal server error`))
 }
