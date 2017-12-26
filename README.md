@@ -25,8 +25,8 @@ This middleware contains:
 ## Contributing
 
 * Ping me on twitter [@thoas](https://twitter.com/thoas)
-* Fork the project [https://github.com/thoas/call911](https://github.com/thoas/call911)
-* Fix open issues [https://github.com/thoas/call911/issues](https://github.com/thoas/call911/issues) or request new features
+* Fork the project [https://github.com/thoas/letitgo](https://github.com/thoas/letitgo)
+* Fix open issues [https://github.com/thoas/letitgo/issues](https://github.com/thoas/letitgo/issues) or request new features
 
 Don't hesitate ;)
 
