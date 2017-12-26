@@ -1,6 +1,6 @@
-# call911
+# Let it go
 
-call911 is a Go middleware to display debug information when an application is in a panic situation
+A Go middleware to display debug information when an application is in a panic situation
 or needs to handle an error.
 
 This middleware contains:
