@@ -1,4 +1,4 @@
-package call911
+package letitgo
 
 import (
 	"github.com/maruel/panicparse/stack"

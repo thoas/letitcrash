@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/pkg/errors"
-	"github.com/thoas/call911"
+	"github.com/thoas/letitgo"
 )
 
 func main() {
@@ -19,11 +19,11 @@ func main() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			call911.HandleError(r)
+			letitgo.PrintError(r)
 		}
 	}()
 
-	call911.HandleError(errors.WithStack(fmt.Errorf("generated error")))
+	letitgo.PrintError(errors.WithStack(fmt.Errorf("generated error")))
 
 	panic(errors.WithStack(fmt.Errorf("it's called panic")))
 }

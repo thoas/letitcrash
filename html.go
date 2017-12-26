@@ -1,4 +1,4 @@
-package call911
+package letitgo
 
 const debugTpl = `<!DOCTYPE html>
 <html lang="en">
