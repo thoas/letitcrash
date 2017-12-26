@@ -1,4 +1,4 @@
-# Let it go
+# Let it Go
 
 A Go middleware to display debug information when an application is in a panic situation
 or needs to handle an error.
