@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 	"runtime/debug"
 
-	"github.com/maruel/panicparse/stack"
+	"github.com/thoas/panicparse/stack"
 )
 
 // process copies stdin to stdout and processes any "panic: " line found.
 func process(in io.Reader, out io.Writer, p *stack.Palette, s stack.Similarity, fullPath, parse bool) error {
 	goroutines, err := stack.ParseDump(in, out)
+
 	if err != nil {
 		return err
 	}
@@ -29,15 +29,28 @@ func process(in io.Reader, out io.Writer, p *stack.Palette, s stack.Similarity, 
 	return err
 }
 
-// PrintError handles error and format it to stdout.
-func PrintError(thr interface{}) error {
-	var out io.Writer = os.Stdout
+func bufferFromError(err interface{}) *bytes.Buffer {
+	// We handle pkg/errors.withStack struct
+	if err, ok := err.(stackTracer); ok {
+		buffer := new(bytes.Buffer)
+		// Simulate a goroutine fake id to be correctly handled by panicparse
+		buffer.WriteString("goroutine 0 [running]:")
+		stackTrace := fmt.Sprintf("%+v", err.StackTrace())
+		buffer.WriteString(stackTrace)
 
-	s := stack.AnyPointer
+		return buffer
+	}
 
 	buffer := new(bytes.Buffer)
-	buffer.WriteString(fmt.Sprintf("runtime error: %s%s%s\n", errorColor, thr, resetFG))
+	buffer.WriteString(fmt.Sprintf("runtime error: %s%s%s\n", errorColor, err, resetFG))
 	buffer.Write(debug.Stack())
 
-	return process(buffer, out, &defaultPalette, s, false, true)
+	return buffer
+}
+
+// PrintError handles error and format it to stdout.
+func PrintError(err interface{}, out io.Writer) error {
+	s := stack.AnyPointer
+
+	return process(bufferFromError(err), out, &defaultPalette, s, false, true)
 }

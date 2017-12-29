@@ -4,12 +4,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 var defaultOptions = newOptions(
 	WithVerbose(false),
 	WithConsole(true),
-	WithErrorHandler(defaultErrorHandler),
+	WithErrorHandler(DefaultErrorHandler),
 )
 
 // SetDefaultOptions sets default options.
@@ -33,7 +34,7 @@ func HandleError(err interface{}, w http.ResponseWriter, r *http.Request, opts .
 	}
 
 	if opt.Console != nil && *opt.Console {
-		PrintError(err)
+		PrintError(err, os.Stdout)
 	}
 
 	opt.ErrorHandler(err, w, r)

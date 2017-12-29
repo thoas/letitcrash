@@ -1,9 +1,9 @@
 package letitgo
 
 import (
-	"github.com/maruel/panicparse/stack"
 	"github.com/mgutz/ansi"
 	"github.com/pkg/errors"
+	"github.com/thoas/panicparse/stack"
 )
 
 type stackTracer interface {
