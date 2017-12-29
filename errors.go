@@ -11,11 +11,13 @@ import (
 
 // process copies stdin to stdout and processes any "panic: " line found.
 func process(in io.Reader, out io.Writer, p *stack.Palette, s stack.Similarity, fullPath, parse bool) error {
+	// Extract goroutines from stacktrace
 	goroutines, err := stack.ParseDump(in, out)
 
 	if err != nil {
 		return err
 	}
+	// Parse arguments from reference to transcription
 	if parse {
 		stack.Augment(goroutines)
 	}
@@ -41,6 +43,7 @@ func bufferFromError(err interface{}) *bytes.Buffer {
 		return buffer
 	}
 
+	// Retrieve the whole stack for panicparse to analyze
 	buffer := new(bytes.Buffer)
 	buffer.WriteString(fmt.Sprintf("runtime error: %s%s%s\n", errorColor, err, resetFG))
 	buffer.Write(debug.Stack())
