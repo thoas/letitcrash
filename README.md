@@ -1,4 +1,4 @@
-# Let it Go
+# Let it crash
 
 A Go middleware to display debug information when an application is in a panic situation
 or needs to handle an error.
@@ -25,8 +25,8 @@ This middleware contains:
 ## Contributing
 
 * Ping me on twitter [@thoas](https://twitter.com/thoas)
-* Fork the project [https://github.com/thoas/letitgo](https://github.com/thoas/letitgo)
-* Fix open issues [https://github.com/thoas/letitgo/issues](https://github.com/thoas/letitgo/issues) or request new features
+* Fork the project [https://github.com/thoas/letitcrash](https://github.com/thoas/letitgo)
+* Fix open issues [https://github.com/thoas/letitcrash/issues](https://github.com/thoas/letitgo/issues) or request new features
 
 Don't hesitate ;)
 

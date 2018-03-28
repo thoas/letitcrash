@@ -1,4 +1,4 @@
-package letitgo
+package letitcrash
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 // ErrorHandler is an handler to render the error.
 type ErrorHandler func(err interface{}, w http.ResponseWriter, r *http.Request)
 
-// DefaultErrorHandler is an handler provided by letitgo to render the error.
+// DefaultErrorHandler is an handler provided by letitcrash to render the error.
 func DefaultErrorHandler(err interface{}, w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusInternalServerError)
 

@@ -1,4 +1,4 @@
-package letitgo
+package letitcrash
 
 // Option is a functional option.
 type Option func(*Options)

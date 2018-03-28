@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/thoas/letitgo"
+	"github.com/thoas/letitcrash"
 )
 
 func main() {
@@ -20,11 +20,11 @@ func main() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			letitgo.PrintError(r, os.Stdout)
+			letitcrash.PrintError(r, os.Stdout)
 		}
 	}()
 
-	letitgo.PrintError(errors.WithStack(fmt.Errorf("generated error")), os.Stdout)
+	letitcrash.PrintError(errors.WithStack(fmt.Errorf("generated error")), os.Stdout)
 
 	panic(errors.WithStack(fmt.Errorf("it's called panic")))
 }

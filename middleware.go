@@ -1,4 +1,4 @@
-package letitgo
+package letitcrash
 
 import (
 	"io/ioutil"

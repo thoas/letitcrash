@@ -1,4 +1,4 @@
-package letitgo
+package letitcrash
 
 const debugTpl = `<!DOCTYPE html>
 <html lang="en">
